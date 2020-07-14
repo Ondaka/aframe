@@ -13,21 +13,22 @@ if (THREE.ImageLoader) {
   THREE.ImageLoader.prototype.crossOrigin = 'anonymous';
 }
 
-// In-memory caching for XHRs (for images, audio files, textures, etc.).
-if (THREE.Cache) {
-  THREE.Cache.enabled = true;
-}
+//  ONDAKA: Disable cache
+// // In-memory caching for XHRs (for images, audio files, textures, etc.).
+// if (THREE.Cache) {
+//   THREE.Cache.enabled = true;
+// }
 
 // TODO: Eventually include these only if they are needed by a component.
-require('../../vendor/DeviceOrientationControls'); // THREE.DeviceOrientationControls
+// require('../../vendor/DeviceOrientationControls'); // THREE.DeviceOrientationControls
 require('super-three/examples/js/loaders/DRACOLoader');  // THREE.DRACOLoader
 require('super-three/examples/js/loaders/GLTFLoader');  // THREE.GLTFLoader
-require('super-three/examples/js/loaders/OBJLoader');  // THREE.OBJLoader
-require('super-three/examples/js/loaders/MTLLoader');  // THREE.MTLLoader
+// require('super-three/examples/js/loaders/OBJLoader');  // THREE.OBJLoader
+// require('super-three/examples/js/loaders/MTLLoader');  // THREE.MTLLoader
 
 THREE.DRACOLoader.prototype.crossOrigin = 'anonymous';
 THREE.GLTFLoader.prototype.crossOrigin = 'anonymous';
-THREE.MTLLoader.prototype.crossOrigin = 'anonymous';
-THREE.OBJLoader.prototype.crossOrigin = 'anonymous';
+// THREE.MTLLoader.prototype.crossOrigin = 'anonymous';
+// THREE.OBJLoader.prototype.crossOrigin = 'anonymous';
 
 module.exports = THREE;

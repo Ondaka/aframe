@@ -1,4 +1,18 @@
-<h1 align="center">A-Frame</h1>
+<h1 align="center">The Ondaka Fork of A-Frame</h1>
+
+Is contains a few changes to make aframe leaner.
+
+## Changes
+
+In index.js
+* Remove IE11 pollyfills
+* Remove CSS files
+* Remove WebVR Pollyfill because we don't need it
+
+In lib/three.js
+* Disable THREE.Cache
+* Disable unused loaders
+* Disable /DeviceOrientationControls
 
 <p align="center"><a href="https://aframe.io" target="_blank"><img width="480" alt="A-Frame" src="https://user-images.githubusercontent.com/674727/32120889-230ef110-bb0f-11e7-908c-76e39aa43149.jpg"></a></p>
 

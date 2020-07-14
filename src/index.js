@@ -4,44 +4,48 @@ window.Promise = window.Promise || require('promise-polyfill');
 // WebVR polyfill
 // Check before the polyfill runs.
 window.hasNativeWebVRImplementation = !!window.navigator.getVRDisplays ||
-                                      !!window.navigator.getVRDevices;
+  !!window.navigator.getVRDevices;
 window.hasNativeWebXRImplementation = navigator.xr !== undefined;
 
-// If native WebXR or WebVR are defined WebVRPolyfill does not initialize.
-if (!window.hasNativeWebXRImplementation && !window.hasNativeWebVRImplementation) {
-  var isIOSOlderThan10 = require('./utils/isIOSOlderThan10');
-  // Workaround for iOS Safari canvas sizing issues in stereo (webvr-polyfill/issues/102).
-  // Only for iOS on versions older than 10.
-  var bufferScale = isIOSOlderThan10(window.navigator.userAgent) ? 1 / window.devicePixelRatio : 1;
-  var WebVRPolyfill = require('webvr-polyfill');
-  var polyfillConfig = {
-    BUFFER_SCALE: bufferScale,
-    CARDBOARD_UI_DISABLED: true,
-    ROTATE_INSTRUCTIONS_DISABLED: true,
-    MOBILE_WAKE_LOCK: !!window.cordova
-  };
-  window.webvrpolyfill = new WebVRPolyfill(polyfillConfig);
-}
+
+// ONDAKA: We don't need WEBXR/VR
+// // If native WebXR or WebVR are defined WebVRPolyfill does not initialize.
+// if (!window.hasNativeWebXRImplementation && !window.hasNativeWebVRImplementation) {
+//   var isIOSOlderThan10 = require('./utils/isIOSOlderThan10');
+//   // Workaround for iOS Safari canvas sizing issues in stereo (webvr-polyfill/issues/102).
+//   // Only for iOS on versions older than 10.
+//   var bufferScale = isIOSOlderThan10(window.navigator.userAgent) ? 1 / window.devicePixelRatio : 1;
+//   var WebVRPolyfill = require('webvr-polyfill');
+//   var polyfillConfig = {
+//     BUFFER_SCALE: bufferScale,
+//     CARDBOARD_UI_DISABLED: true,
+//     ROTATE_INSTRUCTIONS_DISABLED: true,
+//     MOBILE_WAKE_LOCK: !!window.cordova
+//   };
+//   window.webvrpolyfill = new WebVRPolyfill(polyfillConfig);
+// }
 
 var utils = require('./utils/');
 var debug = utils.debug;
 
-if (utils.isIE11) {
-  // Polyfill `CustomEvent`.
-  require('custom-event-polyfill');
-  // Polyfill String.startsWith.
-  require('../vendor/starts-with-polyfill');
-}
+// Ondaka: We do not support IE11
+// if (utils.isIE11) {
+//   // Polyfill `CustomEvent`.
+//   require('custom-event-polyfill');
+//   // Polyfill String.startsWith.
+//   require('../vendor/starts-with-polyfill');
+// }
 
 var error = debug('A-Frame:error');
 var warn = debug('A-Frame:warn');
 
-if (window.document.currentScript && window.document.currentScript.parentNode !==
-    window.document.head && !window.debug) {
-  warn('Put the A-Frame <script> tag in the <head> of the HTML *before* the scene to ' +
-       'ensure everything for A-Frame is properly registered before they are used from ' +
-       'HTML.');
-}
+// Ondaka: This error is annoying and not needed
+// if (window.document.currentScript && window.document.currentScript.parentNode !==
+//   window.document.head && !window.debug) {
+//   warn('Put the A-Frame <script> tag in the <head> of the HTML *before* the scene to ' +
+//     'ensure everything for A-Frame is properly registered before they are used from ' +
+//     'HTML.');
+// }
 
 // Error if not using a server.
 if (!window.cordova && window.location.protocol === 'file:') {
@@ -54,11 +58,12 @@ if (!window.cordova && window.location.protocol === 'file:') {
 
 require('present'); // Polyfill `performance.now()`.
 
+// Ondaka: Unused CSS
 // CSS.
-if (utils.device.isBrowserEnvironment) {
-  require('./style/aframe.css');
-  require('./style/rStats.css');
-}
+// if (utils.device.isBrowserEnvironment) {
+//   require('./style/aframe.css');
+//   require('./style/rStats.css');
+// }
 
 // Required before `AEntity` so that all components are registered.
 var AScene = require('./core/scene/a-scene').AScene;
@@ -92,7 +97,7 @@ require('./extras/primitives/');
 
 console.log('A-Frame Version: 1.0.4 (Date 2020-06-15, Commit #936e32a1)');
 console.log('THREE Version (https://github.com/supermedium/three.js):',
-            pkg.dependencies['super-three']);
+  pkg.dependencies['super-three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
 module.exports = window.AFRAME = {
