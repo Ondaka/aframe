@@ -57,12 +57,12 @@ if (!window.cordova && window.location.protocol === 'file:') {
 
 require('present'); // Polyfill `performance.now()`.
 
-// Ondaka: Unused CSS
 // CSS.
-// if (utils.device.isBrowserEnvironment) {
-//   require('./style/aframe.css');
-//   require('./style/rStats.css');
-// }
+if (utils.device.isBrowserEnvironment) {
+  // Ondaka: Unused CSS
+  require('./style/aframe.css');
+  //   require('./style/rStats.css');
+}
 
 // Required before `AEntity` so that all components are registered.
 var AScene = require('./core/scene/a-scene').AScene;
@@ -94,7 +94,7 @@ require('./core/a-mixin');
 require('./extras/components/');
 require('./extras/primitives/');
 
-console.log('A-Frame Version: 1.0.4 (Date 2020-07-15, Commit #1439898)');
+console.log('A-Frame Version: 1.0.4 (Date 2020-07-15, Commit #b8d86184)');
 console.log('THREE Version (https://github.com/supermedium/three.js):',
   pkg.dependencies['super-three']);
 // ONDAKA: We don't need webvr
