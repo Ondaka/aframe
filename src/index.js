@@ -57,12 +57,12 @@ if (!window.cordova && window.location.protocol === 'file:') {
 
 require('present'); // Polyfill `performance.now()`.
 
-// Ondaka: Unused CSS
 // CSS.
-// if (utils.device.isBrowserEnvironment) {
-//   require('./style/aframe.css');
-//   require('./style/rStats.css');
-// }
+if (utils.device.isBrowserEnvironment) {
+  // Ondaka: Unused CSS
+  require('./style/aframe.css');
+  //   require('./style/rStats.css');
+}
 
 // Required before `AEntity` so that all components are registered.
 var AScene = require('./core/scene/a-scene').AScene;
