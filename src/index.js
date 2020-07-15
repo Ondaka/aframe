@@ -7,7 +7,6 @@ window.hasNativeWebVRImplementation = !!window.navigator.getVRDisplays ||
   !!window.navigator.getVRDevices;
 window.hasNativeWebXRImplementation = navigator.xr !== undefined;
 
-
 // ONDAKA: We don't need WEBXR/VR
 // // If native WebXR or WebVR are defined WebVRPolyfill does not initialize.
 // if (!window.hasNativeWebXRImplementation && !window.hasNativeWebVRImplementation) {
@@ -37,7 +36,7 @@ var debug = utils.debug;
 // }
 
 var error = debug('A-Frame:error');
-var warn = debug('A-Frame:warn');
+// var warn = debug('A-Frame:warn');
 
 // Ondaka: This error is annoying and not needed
 // if (window.document.currentScript && window.document.currentScript.parentNode !==
@@ -95,10 +94,11 @@ require('./core/a-mixin');
 require('./extras/components/');
 require('./extras/primitives/');
 
-console.log('A-Frame Version: 1.0.4 (Date 2020-06-15, Commit #936e32a1)');
+console.log('A-Frame Version: 1.0.4 (Date 2020-07-14, Commit #4a6f4dd)');
 console.log('THREE Version (https://github.com/supermedium/three.js):',
   pkg.dependencies['super-three']);
-console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
+// ONDAKA: We don't need webvr
+// console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
 module.exports = window.AFRAME = {
   AComponent: require('./core/component').Component,
