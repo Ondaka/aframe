@@ -71661,7 +71661,7 @@ function createStats (scene) {
   });
 }
 
-},{"../../../vendor/rStats":186,"../../../vendor/rStats.extras":185,"../../core/component":103,"../../lib/rStatsAframe":150,"../../utils":176}],82:[function(_dereq_,module,exports){
+},{"../../../vendor/rStats":187,"../../../vendor/rStats.extras":186,"../../core/component":103,"../../lib/rStatsAframe":150,"../../utils":176}],82:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../../core/component').registerComponent;
 var constants = _dereq_('../../constants/');
 var utils = _dereq_('../../utils/');
@@ -78845,7 +78845,7 @@ module.exports = function initWakelock (scene) {
   scene.addEventListener('exit-vr', function () { wakelock.release(); });
 };
 
-},{"../../../vendor/wakelock/wakelock":188}],112:[function(_dereq_,module,exports){
+},{"../../../vendor/wakelock/wakelock":189}],112:[function(_dereq_,module,exports){
 var utils = _dereq_('../utils/');
 var PropertyTypes = _dereq_('./propertyTypes');
 
@@ -80439,7 +80439,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 1.0.4 (Date 2020-08-17, Commit #700b14ab)');
+console.log('A-Frame Version: 1.0.4 (Date 2020-08-18, Commit #5606f8ec)');
 console.log('THREE Version (https://github.com/supermedium/three.js):',
   pkg.dependencies['super-three']);
 // ONDAKA: We don't need webvr
@@ -80554,7 +80554,7 @@ if (THREE.ImageLoader) {
 // }
 
 // TODO: Eventually include these only if they are needed by a component.
-// require('../../vendor/DeviceOrientationControls'); // THREE.DeviceOrientationControls
+_dereq_('../../vendor/DeviceOrientationControls'); // THREE.DeviceOrientationControls
 _dereq_('super-three/examples/js/loaders/DRACOLoader');  // THREE.DRACOLoader
 _dereq_('super-three/examples/js/loaders/GLTFLoader');  // THREE.GLTFLoader
 // require('super-three/examples/js/loaders/OBJLoader');  // THREE.OBJLoader
@@ -80569,7 +80569,7 @@ module.exports = THREE;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"super-three":34,"super-three/examples/js/loaders/DRACOLoader":35,"super-three/examples/js/loaders/GLTFLoader":36}],152:[function(_dereq_,module,exports){
+},{"../../vendor/DeviceOrientationControls":185,"super-three":34,"super-three/examples/js/loaders/DRACOLoader":35,"super-three/examples/js/loaders/GLTFLoader":36}],152:[function(_dereq_,module,exports){
 var registerShader = _dereq_('../core/shader').registerShader;
 var THREE = _dereq_('../lib/three');
 var utils = _dereq_('../utils/');
@@ -84001,6 +84001,119 @@ module.exports.onButtonEvent = function (id, evtName, component, hand) {
 };
 
 },{"../constants":95}],185:[function(_dereq_,module,exports){
+/**
+ * @author richt / http://richt.me
+ * @author WestLangley / http://github.com/WestLangley
+ *
+ * W3C Device Orientation control (http://w3c.github.io/deviceorientation/spec-source-orientation.html)
+ */
+
+THREE.DeviceOrientationControls = function ( object ) {
+
+  var scope = this;
+
+  this.object = object;
+  this.object.rotation.reorder( 'YXZ' );
+
+  this.enabled = true;
+
+  this.deviceOrientation = {};
+  this.screenOrientation = 0;
+
+  this.alphaOffset = 0; // radians
+
+  var onDeviceOrientationChangeEvent = function ( event ) {
+
+    scope.deviceOrientation = event;
+
+  };
+
+  var onScreenOrientationChangeEvent = function () {
+
+    scope.screenOrientation = window.orientation || 0;
+
+  };
+
+  // The angles alpha, beta and gamma form a set of intrinsic Tait-Bryan angles of type Z-X'-Y''
+
+  var setObjectQuaternion = function () {
+
+    var zee = new THREE.Vector3( 0, 0, 1 );
+
+    var euler = new THREE.Euler();
+
+    var q0 = new THREE.Quaternion();
+
+    var q1 = new THREE.Quaternion( - Math.sqrt( 0.5 ), 0, 0, Math.sqrt( 0.5 ) ); // - PI/2 around the x-axis
+
+    return function ( quaternion, alpha, beta, gamma, orient ) {
+
+      euler.set( beta, alpha, - gamma, 'YXZ' ); // 'ZXY' for the device, but 'YXZ' for us
+
+      quaternion.setFromEuler( euler ); // orient the device
+
+      quaternion.multiply( q1 ); // camera looks out the back of the device, not the top
+
+      quaternion.multiply( q0.setFromAxisAngle( zee, - orient ) ); // adjust for screen orientation
+
+    };
+
+  }();
+
+  this.connect = function () {
+ 
+    onScreenOrientationChangeEvent();
+
+    window.addEventListener( 'orientationchange', onScreenOrientationChangeEvent, false );
+    window.addEventListener( 'deviceorientation', onDeviceOrientationChangeEvent, false );
+
+    scope.enabled = true;
+
+  };
+
+  this.disconnect = function () {
+
+    window.removeEventListener( 'orientationchange', onScreenOrientationChangeEvent, false );
+    window.removeEventListener( 'deviceorientation', onDeviceOrientationChangeEvent, false );
+
+    scope.enabled = false;
+
+  };
+
+  this.update = function () {
+
+    if ( scope.enabled === false ) return;
+
+    var device = scope.deviceOrientation;
+
+    if ( device ) {
+
+      var alpha = device.alpha ? THREE.Math.degToRad( device.alpha ) + scope.alphaOffset : 0; // Z
+
+      var beta = device.beta ? THREE.Math.degToRad( device.beta ) : 0; // X'
+
+      var gamma = device.gamma ? THREE.Math.degToRad( device.gamma ) : 0; // Y''
+
+      var orient = scope.screenOrientation ? THREE.Math.degToRad( scope.screenOrientation ) : 0; // O
+
+      setObjectQuaternion( scope.object.quaternion, alpha, beta, gamma, orient );
+
+    }
+
+
+  };
+
+  this.dispose = function () {
+
+    scope.disconnect();
+
+  };
+
+  this.connect();
+
+};
+
+},{}],186:[function(_dereq_,module,exports){
 window.glStats = function () {
 
     var _rS = null;
@@ -84261,7 +84374,7 @@ if (typeof module === 'object') {
   };
 }
 
-},{}],186:[function(_dereq_,module,exports){
+},{}],187:[function(_dereq_,module,exports){
 // performance.now() polyfill from https://gist.github.com/paulirish/5438650
 'use strict';
 
@@ -84716,7 +84829,7 @@ if (typeof module === 'object') {
   module.exports = window.rStats;
 }
 
-},{}],187:[function(_dereq_,module,exports){
+},{}],188:[function(_dereq_,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -84778,7 +84891,7 @@ Util.isLandscapeMode = function() {
 
 module.exports = Util;
 
-},{}],188:[function(_dereq_,module,exports){
+},{}],189:[function(_dereq_,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -84854,6 +84967,6 @@ function getWakeLock() {
 
 module.exports = getWakeLock();
 
-},{"./util.js":187}]},{},[149])(149)
+},{"./util.js":188}]},{},[149])(149)
 });
 //# sourceMappingURL=aframe-master.js.map

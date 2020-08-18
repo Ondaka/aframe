@@ -93,7 +93,7 @@ require('./core/a-mixin');
 require('./extras/components/');
 require('./extras/primitives/');
 
-console.log('A-Frame Version: 1.0.4 (Date 2020-08-17, Commit #700b14ab)');
+console.log('A-Frame Version: 1.0.4 (Date 2020-08-18, Commit #5606f8ec)');
 console.log('THREE Version (https://github.com/supermedium/three.js):',
   pkg.dependencies['super-three']);
 // ONDAKA: We don't need webvr
