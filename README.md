@@ -14,7 +14,7 @@ In lib/three.js
 
 Todo:
 
-* Selectively load WebVR Pollyfill because we don't need and DeviceOrientationControls only when they're needed
+* Selectively load WebVR Pollyfill because for ios
 
 <p align="center"><a href="https://aframe.io" target="_blank"><img width="480" alt="A-Frame" src="https://user-images.githubusercontent.com/674727/32120889-230ef110-bb0f-11e7-908c-76e39aa43149.jpg"></a></p>
 
