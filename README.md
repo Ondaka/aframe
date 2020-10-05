@@ -7,7 +7,6 @@ Is contains a few changes to make aframe leaner.
 In index.js
 * Remove IE11 pollyfills
 * Remove CSS files
-* Remove WebVR Pollyfill because we don't need it
 
 In lib/three.js
 * Disable THREE.Cache
