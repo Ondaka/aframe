@@ -21,8 +21,13 @@ if (THREE.ImageLoader) {
 
 // TODO: Eventually include these only if they are needed by a component.
 // require('../../vendor/DeviceOrientationControls'); // THREE.DeviceOrientationControls
-require('super-three/examples/js/loaders/DRACOLoader');  // THREE.DRACOLoader
-require('super-three/examples/js/loaders/GLTFLoader');  // THREE.GLTFLoader
+require('super-three/examples/jsm/loaders/DRACOLoader');  // THREE.DRACOLoader
+require('super-three/examples/jsm/loaders/GLTFLoader');  // THREE.GLTFLoader
+
+// These are to load super-compressed basis textures
+require('super-three/examples/jsm/loaders/KTX2Loader');
+require('super-three/examples/jsm/loaders/BasisTextureLoader');
+
 // require('super-three/examples/js/loaders/OBJLoader');  // THREE.OBJLoader
 // require('super-three/examples/js/loaders/MTLLoader');  // THREE.MTLLoader
 
