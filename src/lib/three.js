@@ -19,18 +19,19 @@ if (THREE.ImageLoader) {
 //   THREE.Cache.enabled = true;
 // }
 
-// Ondaka: Vendor These and import directly from web app.
-// This is because examples/js is deprecated and examples/jsm
-// are meant to be imported individually by the application.
-// It would also be good to use newer versions than super-three provides
-// Not all the JSM modules cannot be imported with require(), so it is
-// best to include them individually from the web app
-
+// Ondaka: Use newer versions
 // require('../../vendor/DeviceOrientationControls'); // THREE.DeviceOrientationControls
 // require('super-three/examples/js/loaders/DRACOLoader');  // THREE.DRACOLoader
 // require('super-three/examples/js/loaders/GLTFLoader');  // THREE.GLTFLoader
 // require('super-three/examples/js/loaders/OBJLoader');  // THREE.OBJLoader
 // require('super-three/examples/js/loaders/MTLLoader');  // THREE.MTLLoader
+THREE.Loader.prototype.crossOrigin = 'anonymous';
+
+THREE.DRACOLoader = require('./DracoLoader')(THREE);
+THREE.GLTFLoader = require('./GLTFLoader')(THREE);
+THREE.KTX2Loader = require('./KTX2Loader')(THREE);
+
+// Ondaka: ADD KTX2 Loader
 
 // THREE.DRACOLoader.prototype.crossOrigin = 'anonymous';
 // THREE.GLTFLoader.prototype.crossOrigin = 'anonymous';
