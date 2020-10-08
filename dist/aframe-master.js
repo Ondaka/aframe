@@ -73246,7 +73246,7 @@ require('./core/a-mixin');
 require('./extras/components/');
 require('./extras/primitives/');
 
-console.log('A-Frame Version: 1.0.4 (Date 2020-10-08, Commit #4a58c1d1)');
+console.log('A-Frame Version: 1.0.4 (Date 2020-10-08, Commit #0173fb1b)');
 console.log('THREE Version (https://github.com/supermedium/three.js):',
   pkg.dependencies['super-three']);
 // ONDAKA: We don't need webvr
@@ -73921,7 +73921,7 @@ module.exports = function(THREE){
         console.warn( 'THREE.DRACOLoader: The .getDecoderModule() method has been removed. Use instance methods.' );
     
     };
-    
+  return DRACOLoader   
 }
     
 },{}],149:[function(require,module,exports){
